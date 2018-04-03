@@ -6,7 +6,7 @@ import {
   OneToMany
 } from "typeorm";
 import { BaseEntity } from "typeorm/repository/BaseEntity";
-import Batches from "../class/entity";
+import Classes from "../class/entity";
 import Color from "../colors/entity";
 
 @Entity()
@@ -22,8 +22,8 @@ export default class Student extends BaseEntity {
   @Column("text", { nullable: false })
   profilePicture: string;
 
-  @ManyToOne(_ => Batches, batches => batches.student)
-  batches: Batches;
+  @ManyToOne(_ => Classes, classes => classes.student)
+  classes: Classes;
 
   @OneToMany(_ => Color, color => color.student,{eager: true})
   colors: Color[];

@@ -9,7 +9,7 @@ import {
 import { BaseEntity } from "typeorm/repository/BaseEntity";
 import Student from "../students/entity";
 import Color from "../colors/entity";
-//import Batches from '../class/entity'
+import Classes from '../class/entity'
 
 @Entity()
 export default class Evaluation extends BaseEntity {
@@ -25,9 +25,9 @@ export default class Evaluation extends BaseEntity {
   @JoinColumn()
   colors: Color;
 
-  // @OneToOne(_ => Batches)
-  // @JoinColumn()
-  // batches: Batches;
+  @OneToOne(_ => Classes)
+  @JoinColumn()
+  classes: Classes;
 
   @OneToMany(_ => Evaluation, evaluations => evaluations.student)
   student: Student[];

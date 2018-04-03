@@ -2,7 +2,7 @@ import { createConnection } from 'typeorm'
 import { DefaultNamingStrategy } from 'typeorm/naming-strategy/DefaultNamingStrategy'
 import { NamingStrategyInterface } from 'typeorm/naming-strategy/NamingStrategyInterface'
 import { snakeCase } from 'typeorm/util/StringUtils'
-import Batches from './class/entity'
+import Classes from './class/entity'
 import Student from './students/entity'
 import Color from './colors/entity'
 import Evaluation from './evaluation/entity'
@@ -31,7 +31,7 @@ export default () =>
   createConnection({
       type: "postgres",
       url: process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/postgres',
-      entities: [Student, Batches, Color, Evaluation],
+      entities: [Student, Classes, Color, Evaluation],
       synchronize: true,
       logging: true,
       namingStrategy: new CustomNamingStrategy()

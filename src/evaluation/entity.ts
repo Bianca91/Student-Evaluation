@@ -29,9 +29,7 @@ export default class Evaluation extends BaseEntity {
   @JoinColumn()
   class: Class;
 
-  @OneToMany(_ => Evaluation, evaluations => evaluations.student, {
-    eager: true
-  })
+  @OneToMany(_ => Evaluation, evaluations => evaluations.student)
   student: Student[];
 
 

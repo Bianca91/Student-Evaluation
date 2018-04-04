@@ -19,7 +19,7 @@ export default class StudentController {
     return Student.findOneById(id);
   }
 
-  @Authorized()
+  //@Authorized()
   @Get("/students")
   allStudents() {
     return Student.find();

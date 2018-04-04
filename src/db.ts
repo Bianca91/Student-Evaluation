@@ -6,6 +6,7 @@ import Classes from './class/entity'
 import Student from './students/entity'
 import Color from './colors/entity'
 import Evaluation from './evaluation/entity'
+import User from './login/entity'
 
 class CustomNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
 
@@ -31,7 +32,7 @@ export default () =>
   createConnection({
       type: "postgres",
       url: process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/postgres',
-      entities: [Student, Classes, Color, Evaluation],
+      entities: [Student, Classes, Color, Evaluation, User],
       synchronize: true,
       logging: true,
       namingStrategy: new CustomNamingStrategy()

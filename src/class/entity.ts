@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { BaseEntity } from "typeorm/repository/BaseEntity";
-import {IsDate} from "class-validator";
+//import {IsDate} from "class-validator";
 import Student from "../students/entity";
 
 // Need tovalidate Date

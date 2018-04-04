@@ -6,7 +6,8 @@ import {
   NotFoundError,
   Post,
   HttpCode,
-  Get
+  Get,
+  Delete
 } from "routing-controllers";
 import Student from "./entity";
 
@@ -37,5 +38,13 @@ export default class StudentController {
   @HttpCode(201)
   createStudent(@Body() student: Student) {
     return student.save();
+  }
+
+  @Delete("/students/:id")
+  async removeStudent(@Param("id") id: number) {
+    const student = await Student.findOneById(id);
+    if (!student) throw new NotFoundError("Cannot find user");
+    student.remove();
+    return "Student succesfully deleted";
   }
 }

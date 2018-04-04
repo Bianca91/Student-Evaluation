@@ -7,7 +7,8 @@ import {
   Post,
   HttpCode,
   Get,
-  Delete
+  Delete,
+  Authorized
 } from "routing-controllers";
 import Student from "./entity";
 
@@ -18,11 +19,13 @@ export default class StudentController {
     return Student.findOneById(id);
   }
 
+  @Authorized()
   @Get("/students")
   allStudents() {
     return Student.find();
   }
 
+  @Authorized()
   @Put("/students/:id")
   async updateStudentInfo(
     @Param("id") id: number,
@@ -34,12 +37,14 @@ export default class StudentController {
     return Student.merge(student, update).save();
   }
 
+  @Authorized()
   @Post("/students")
   @HttpCode(201)
   createStudent(@Body() student: Student) {
     return student.save();
   }
 
+  @Authorized()
   @Delete("/students/:id")
   async removeStudent(@Param("id") id: number) {
     const student = await Student.findOneById(id);

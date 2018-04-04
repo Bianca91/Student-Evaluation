@@ -7,10 +7,12 @@ import LoginController from './login/controller'
 import {Action } from 'routing-controllers'
 import { verify } from './jwt'
 import UserController from './login/userController'
+import User from './login/entity'
 
 const port = process.env.PORT || 4000
 
 const app = createKoaServer({
+   cors: true,
    controllers: [ClassController, StudentController, LoginController, UserController],
 
    authorizationChecker: (action: Action) => {
@@ -21,12 +23,25 @@ const app = createKoaServer({
        }
 
        return false
-     }
+     },
+
+     currentUserChecker: async (action: Action) => {
+    const header: string = action.request.headers.authorization
+    if (header && header.startsWith('Bearer ')) {
+      const [ , token ] = header.split(' ')
+
+      if (token) {
+        const id = verify(token)
+        return User.findOneById(id)
+      }
+    }
+    return undefined
+  }
 
 })
 
 setupDb()
   .then(_ =>
-    app.listen(4000, () => console.log(`Listening on port ${port}`))
+    app.listen(port, () => console.log(`Listening on port ${port}`))
   )
   .catch(err => console.error(err))

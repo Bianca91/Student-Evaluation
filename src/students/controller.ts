@@ -11,6 +11,7 @@ import {
   Authorized
 } from "routing-controllers";
 import Student from "./entity";
+import Color from "../colors/entity";
 
 @JsonController()
 export default class StudentController {
@@ -40,8 +41,14 @@ export default class StudentController {
   //@Authorized()
   @Post("/students")
   @HttpCode(201)
-  createStudent(@Body() student: Student) {
-    return student.save();
+  async createStudent(@Body() student: Student) {
+    const entityStudent = await Student.create(student).save();
+
+    for (let i = 0; i < student.colors.length; i++) {
+      const entityColor = await Color.create({
+        student: entityStudent[i]
+      }).save();
+    }
   }
 
   //@Authorized()

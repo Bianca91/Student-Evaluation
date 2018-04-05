@@ -25,6 +25,6 @@ export default class Student extends BaseEntity {
   @ManyToOne(_ => Classes, classes => classes.student)
   classes: Classes;
 
-  @OneToMany(_ => Color, colors => colors.student, { eager: true})
-  colors: Color[];
+  @OneToMany(_ => Color, color => color.student, { eager: true})
+  color: Color[];
 }

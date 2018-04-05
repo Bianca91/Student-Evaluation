@@ -44,11 +44,12 @@ export default class StudentController {
   async createStudent(@Body() student: Student) {
     const entityStudent = await Student.create(student).save();
 
-    for (let i = 0; i < student.colors.length; i++) {
+    for (let i = 0; i < student.color.length; i++) {
       const entityColor = await Color.create({
-        student: entityStudent[i]
+        student: entityStudent[i].student
       }).save();
     }
+    return entityStudent
   }
 
   //@Authorized()

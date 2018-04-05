@@ -10,6 +10,6 @@ export default class Color extends BaseEntity {
   @Column("text", { default: null })
   colors: string;
 
-  @ManyToOne(_ => Student, student => student.colors)
+  @ManyToOne(_ => Student, student => student.color)
     student: Student;
 }

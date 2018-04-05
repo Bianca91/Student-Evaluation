@@ -20,7 +20,7 @@ export default class StudentController {
     return Student.findOneById(id);
   }
 
-  //@Authorized()
+//  @Authorized()
   @Get("/students")
   allStudents() {
     return Student.find();
@@ -38,21 +38,14 @@ export default class StudentController {
     return Student.merge(student, update).save();
   }
 
-  //@Authorized()
+//  @Authorized()
   @Post("/students")
   @HttpCode(201)
   async createStudent(@Body() student: Student) {
-    const entityStudent = await Student.create(student).save();
-
-    for (let i = 0; i < student.color.length; i++) {
-      const entityColor = await Color.create({
-        student: entityStudent[i].student
-      }).save();
-    }
-    return entityStudent
+    return student.save();
   }
 
-  //@Authorized()
+//  @Authorized()
   @Delete("/students/:id")
   async removeStudent(@Param("id") id: number) {
     const student = await Student.findOneById(id);

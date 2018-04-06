@@ -18,7 +18,7 @@ export default class ClassController {
     return Classes.find()
   }
 
-  //@Authorized()
+//  @Authorized()
   @Post("/classess")
   @HttpCode(201)
   async createBatch(@Body() classes: Classes) {

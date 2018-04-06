@@ -9,12 +9,13 @@ import { verify } from './jwt'
 import UserController from './login/userController'
 import User from './login/entity'
 import ColorsController from './colors/controller'
+import EvaluationController from './evaluation/controller'
 
 const port = process.env.PORT || 4000
 
 const app = createKoaServer({
    cors: true,
-   controllers: [ClassController, StudentController, LoginController, UserController, ColorsController],
+   controllers: [ClassController, StudentController, LoginController, UserController, ColorsController, EvaluationController],
 
    authorizationChecker: (action: Action) => {
        const header: string = action.request.headers.authorization

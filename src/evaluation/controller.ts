@@ -11,6 +11,7 @@ import {
   Authorized
 } from "routing-controllers";
 import Evaluation from "./entity";
+import Student from "../students/entity"
 
 @JsonController()
 export default class EvaluationController {
@@ -38,15 +39,24 @@ export default class EvaluationController {
   }
 
   @Authorized()
-  @Post("/evaluation")
+  @Post("/colors")
   @HttpCode(201)
-  async createEvaluation(@Body() evaluation: Evaluation) {
-    return evaluation.save();
+  async create(@Body() evaluation: Evaluation) {
+    const entityEvaluation = await Evaluation.create(evaluation).save();
+
+    for (let i = 0; i < evaluation.student.length; i++) {
+      const entityStudent = await Student.create({
+        firstName: entityEvaluation[i].firstName,
+        lastName: entityEvaluation[i].lastName,
+        evaluation: entityEvaluation[i]
+      }).save();
+    }
+    return entityEvaluation;
   }
 
   @Authorized()
   @Delete("/evaluation/:id")
-  async removeStudent(@Param("id") id: number) {
+  async removeEvaluation(@Param("id") id: number) {
     const evaluation = await Evaluation.findOneById(id);
     if (!evaluation) throw new NotFoundError("Cannot find user");
     evaluation.remove();

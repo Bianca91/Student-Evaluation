@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { BaseEntity } from "typeorm/repository/BaseEntity";
 import Classes from "../class/entity";
-import Color from "../colors/entity";
+import Evaluation from "../evaluation/entity";
 
 @Entity()
 export default class Student extends BaseEntity {
@@ -25,6 +25,6 @@ export default class Student extends BaseEntity {
   @ManyToOne(_ => Classes, classes => classes.student)
   classes: Classes;
 
-  @OneToMany(_ => Color, color => color.student, { eager: true})
-  color: Color[];
+  @ManyToOne(_ => Evaluation, evaluation => evaluation.student, { eager: true})
+  evaluation: Evaluation[];
 }

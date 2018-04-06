@@ -32,7 +32,7 @@ export default class ColorsController {
       const entityStudent = await Student.create({
         firstName: entityColor[i].firstName,
         lastName: entityColor[i].lastName,
-        color: entityColor[i]
+        //color: entityColor[i]
       }).save();
     }
     return entityColor;

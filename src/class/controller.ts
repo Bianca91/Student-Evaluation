@@ -12,13 +12,13 @@ import Classes from "./entity";
 export default class ClassController {
 
 
-//  @Authorized()
+  @Authorized()
   @Get('/classess')
   allClassess() {
     return Classes.find()
   }
 
-//  @Authorized()
+  @Authorized()
   @Post("/classess")
   @HttpCode(201)
   async createBatch(@Body() classes: Classes) {

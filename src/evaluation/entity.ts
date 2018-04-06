@@ -8,22 +8,20 @@ import {
 } from "typeorm";
 import { BaseEntity } from "typeorm/repository/BaseEntity";
 import Student from "../students/entity";
-import Color from "../colors/entity";
 import Classes from '../class/entity'
 
 @Entity()
 export default class Evaluation extends BaseEntity {
   @PrimaryGeneratedColumn() id?: number;
 
-  @Column("text")
+  @Column("text", {default: new Date()})
   dailyEvaluation: Date; //current date
 
   @Column("text")
   remark: string;
 
-  @OneToOne(_ => Color)
-  @JoinColumn()
-  colors: Color;
+  @Column("text")
+  color: string
 
   @OneToOne(_ => Classes)
   @JoinColumn()

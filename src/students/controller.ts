@@ -11,7 +11,6 @@ import {
   Authorized
 } from "routing-controllers";
 import Student from "./entity";
-import Color from "../colors/entity";
 
 const studentColors = ["Red", "Yellow", "Green"];
 const colorWeight = [2, 3, 1, 4];

@@ -15,10 +15,10 @@ import Classes from '../class/entity'
 export default class Evaluation extends BaseEntity {
   @PrimaryGeneratedColumn() id?: number;
 
-  @Column("text", { nullable: false })
+  @Column("text")
   dailyEvaluation: Date; //current date
 
-  @Column("text", { nullable: false })
+  @Column("text")
   remark: string;
 
   @OneToOne(_ => Color)

@@ -11,22 +11,21 @@ import {
   Authorized
 } from "routing-controllers";
 import Evaluation from "./entity";
-import Student from "../students/entity"
 
 @JsonController()
 export default class EvaluationController {
   @Get("/evaluation/:id")
-  getEvaluation(@Param("id") id: number) {
+  getDetailedEvaluation(@Param("id") id: number) {
     return Evaluation.findOneById(id);
   }
 
-  @Authorized()
+//  @Authorized()
   @Get("/evaluation")
   allEvaluation() {
     return Evaluation.find();
   }
 
-  @Authorized()
+//  @Authorized()
   @Put("/evaluation/:id")
   async updateEvaluation(
     @Param("id") id: number,
@@ -38,23 +37,14 @@ export default class EvaluationController {
     return Evaluation.merge(evaluation, update).save();
   }
 
-  @Authorized()
-  @Post("/colors")
+  // @Authorized()
+  @Post("/evaluation")
   @HttpCode(201)
-  async create(@Body() evaluation: Evaluation) {
-    const entityEvaluation = await Evaluation.create(evaluation).save();
-
-    for (let i = 0; i < evaluation.student.length; i++) {
-      const entityStudent = await Student.create({
-        firstName: entityEvaluation[i].firstName,
-        lastName: entityEvaluation[i].lastName,
-        evaluation: entityEvaluation[i]
-      }).save();
-    }
-    return entityEvaluation;
+  async create(@Body() evaluations: Evaluation) {
+    return evaluations.save();
   }
 
-  @Authorized()
+//  @Authorized()
   @Delete("/evaluation/:id")
   async removeEvaluation(@Param("id") id: number) {
     const evaluation = await Evaluation.findOneById(id);

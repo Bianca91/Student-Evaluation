@@ -25,5 +25,5 @@ export default class Classes extends BaseEntity {
   endDate: Date;
 
   @OneToMany(_ => Student, students => students.classes)
-  student: Student[];
+  students: Student[];
 }

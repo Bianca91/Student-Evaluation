@@ -13,18 +13,18 @@ import Evaluation from "../evaluation/entity";
 export default class Student extends BaseEntity {
   @PrimaryGeneratedColumn() id?: number;
 
-  @Column("text", { nullable: false })
+  @Column("text", {nullable: true})
   firstName: string;
 
-  @Column("text", { nullable: false })
+  @Column("text", {nullable: true})
   lastName: string;
 
-  @Column("text", { nullable: false })
+  @Column("text", {nullable: true})
   profilePicture: string;
 
-  @ManyToOne(_ => Classes, classes => classes.student)
+  @ManyToOne(_ => Classes, classes => classes.students)
   classes: Classes;
 
-  @ManyToOne(_ => Evaluation, evaluation => evaluation.student, { eager: true})
+  @OneToMany(_ => Evaluation, evaluation => evaluation.student)
   evaluation: Evaluation[];
 }

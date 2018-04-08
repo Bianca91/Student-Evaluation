@@ -2,32 +2,39 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
+  ManyToOne,
   OneToOne,
   JoinColumn
 } from "typeorm";
 import { BaseEntity } from "typeorm/repository/BaseEntity";
 import Student from "../students/entity";
-import Classes from '../class/entity'
+import Classes from "../class/entity";
 
 @Entity()
 export default class Evaluation extends BaseEntity {
   @PrimaryGeneratedColumn() id?: number;
 
-  @Column("text", {default: new Date()})
+  @Column("text")
   dailyEvaluation: Date; //current date
 
-  @Column("text")
-  remark: string;
+  @Column("text", { nullable: true })
+  studentName: Date;
 
-  @Column("text")
-  color: string
+  @Column("text", { nullable: true})
+  studentLastName: Date;
+
+  @Column("text", { nullable: true })
+  profilePicture: Date;
+
+  @Column("text") remark: string;
+
+  @Column("text") color: string;
 
   @OneToOne(_ => Classes)
   @JoinColumn()
   classes: Classes;
 
-  @OneToMany(_ => Evaluation, evaluations => evaluations.student)
-  student: Student[];
+  @ManyToOne(_ => Student, student => student.evaluation, {cascadeInsert: true})
+   student: Student;
 
 }

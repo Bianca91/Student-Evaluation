@@ -8,15 +8,14 @@ import {
   HttpCode,
   Get,
   Delete,
-  Authorized
+  Authorized,
+  BadRequestError
 } from "routing-controllers";
 import Student from "./entity";
+import Evaluation from "../evaluation/entity";
+import * as request from "superagent";
 
-const studentColors = ["Red", "Yellow", "Green"];
-const colorWeight = [2, 3, 1, 4];
-const totalWeight = eval(colorWeight.join("+"));
-const weighedColors = new Array();
-let currentColor = 0;
+const baseUrl = "http://localhost:4000";
 
 @JsonController()
 export default class StudentController {
@@ -25,13 +24,13 @@ export default class StudentController {
     return Student.findOneById(id);
   }
 
-  @Authorized()
+//  @Authorized()
   @Get("/students")
   allStudents() {
     return Student.find();
   }
 
-  @Authorized()
+//  @Authorized()
   @Put("/students/:id")
   async updateStudentInfo(
     @Param("id") id: number,
@@ -42,36 +41,74 @@ export default class StudentController {
 
     return Student.merge(student, update).save();
   }
-
-  @Authorized()
   @Post("/students")
-  @HttpCode(201)
-  async createStudent(@Body() student: Student) {
-    return student.save();
-  }
+    @HttpCode(201)
+    async createStudent(@Body() students: Student) {
+      const entityStudent = await Student.create(students).save();
 
-  @Authorized()
-  @Delete("/students/:id")
-  async removeStudent(@Param("id") id: number) {
-    const student = await Student.findOneById(id);
-    if (!student) throw new NotFoundError("Cannot find user");
-    student.remove();
-    return "Student succesfully deleted";
-  }
+      await Evaluation.create({
+        student: entityStudent,
+      }).save();
 
-  @Post("/randomStudent/:id")
-  async getRandomStudent(@Body() randomStudent: Student) {
-    const nextStudent = () => {
-      while (currentColor < studentColors.length) {
-        for (let i = 0; i < colorWeight[currentColor]; i++)
-          weighedColors[weighedColors.length] = studentColors[currentColor];
-        currentColor++;
+      const student = await Student.findOneById(entityStudent.id);
+
+      return student;
+    }
+
+    @Authorized()
+      @Post("/students/:id([0-9]+)/evaluation")
+      @HttpCode(201)
+      async createEvaluaton(@Param("id") studentId: number) {
+        const student = await Student.findOneById(studentId);
+        if (!student) throw new BadRequestError(`This student does not exist`);
+
+
+        await student.save();
+
+        const evaluation = await Evaluation.create({
+          student,
+        }).save();
+
+        return evaluation;
+      }
+    //  @Authorized()
+      @Delete("/students/:id")
+      async removeStudent(@Param("id") id: number) {
+        const student = await Student.findOneById(id);
+        if (!student) throw new NotFoundError("Cannot find user");
+        student.remove();
+        return "Student succesfully deleted";
       }
 
-      const randomStudent = Math.floor(Math.random() * totalWeight);
-      console.log(weighedColors[randomStudent]);
-      return weighedColors[randomStudent];
-    };
-    return randomStudent.save();
-  }
 }
+  // @Post("/students")
+  // @HttpCode(201)
+  // async createStudent(@Body() student: Student) {
+  //   const entityStudent = await Student.create(student).save();
+  //
+  //   for (let i = 0; i < student.evaluation.length; i++) {
+  //     const entityEvaluation = await Evaluation.create({
+  //       student: entityStudent,
+  //       dailyEvaluation: student.evaluation[i].dailyEvaluation,
+  //       remark: student.evaluation[i].remark,
+  //       color: student.evaluation[i].color
+  //     }).save();
+
+
+      // for (let j = 0; j < quiz.question[i].answer.length; j++) {
+      //   await Answer.create({
+      //     question: entityQuestion,
+      //     text: quiz.question[i].answer[j].text,
+      //     correct: quiz.question[i].answer[j].correct
+      //   }).save();
+      // }
+
+  //     const { hasId, save, remove, ...eventData } = entityStudent;
+  //
+  //     await request.post(baseUrl).send({
+  //       event: "newStudent",
+  //       data: eventData
+  //     });
+  //     return entityStudent;
+  //   }
+  // }
